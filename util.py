@@ -1,15 +1,14 @@
 import os
 
-def scan_lighted_delighted(date_dir):
+def scan_lighted_delighted(root_dir):
     '''
-    date_dir: i.e. Data_2017_03_31/ WITH THE FORWARD SLASH
     returns:
         delighted_dirs: maps mesh (Mesh_000000) to directory of delighted data
-            ('data/Data_2017_03_31/Data/Rock/Mesh_000000/_Shared/')
+            ('data/Rock/Mesh_000000/_Shared/')
         lighted_dirs: a list of (type, mesh, version, lighted_directory_path) tuples,
             i.e. (Rock, Mesh_000000, V_000014, 'data/Data_2017_03_31/Data/Rock/Mesh_000000/V_000014/')
     '''
-    data_dir = date_dir + 'Data/'
+    data_dir = root_dir + 'data/'
     delighted_dirs = {}
     lighted_dirs = []
     types = os.listdir(data_dir)
