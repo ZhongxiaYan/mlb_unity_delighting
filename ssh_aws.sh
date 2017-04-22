@@ -1,0 +1,1 @@
+ssh -i berkeley_unity_delighting.pem ubuntu@ec2-52-38-158-227.us-west-2.compute.amazonaws.com
