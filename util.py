@@ -40,6 +40,11 @@ def downsample_image(image, factor):
     '''
     return image.resize((image.width // factor, image.height // factor), Image.ANTIALIAS)
 
+def float_to_uint8(img_array):
+    img_array[img_array < 0] = 0
+    img_array[img_array > 255] = 255
+    return img_array.astype(np.uint8)
+
 from IPython.display import clear_output, Image, display, HTML
 
 def strip_consts(graph_def, max_const_size=32):
