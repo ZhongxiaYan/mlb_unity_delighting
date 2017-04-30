@@ -8,12 +8,14 @@ def scan_lighted_delighted(root_dir):
         lighted_dirs: a list of (type, mesh, version, lighted_directory_path) tuples,
             i.e. (Rock, Mesh_000000, V_000014, 'data/Data_2017_03_31/Data/Rock/Mesh_000000/V_000014/')
     '''
-    data_dir = root_dir + 'data/'
+    data_dir = root_dir 
     delighted_dirs = {}
     lighted_dirs = []
     types = os.listdir(data_dir)
-    for type in types:
-        type_dir = data_dir + type + '/'
+    if ".DS_Store" in types:
+        types.remove(".DS_Store")
+    for t in types:
+        type_dir = data_dir + t + '/'
         meshes = [mesh for mesh in os.listdir(type_dir) if mesh.startswith('Mesh_')]
         for mesh in meshes:
             mesh_dir = type_dir + mesh + '/'
@@ -24,7 +26,7 @@ def scan_lighted_delighted(root_dir):
             versions = [v for v in os.listdir(mesh_dir) if v.startswith('V_')]
             for version in versions:
                 version_dir = mesh_dir + version + '/'
-                lighted_dirs.append((type, mesh, version, version_dir))
+                lighted_dirs.append((t, mesh, version, version_dir))
     return delighted_dirs, lighted_dirs
 
 def zero_rgb(im):
