@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 def scan_lighted_delighted(root_dir):
     '''
