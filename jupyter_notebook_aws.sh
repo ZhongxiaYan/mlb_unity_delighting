@@ -1,0 +1,1 @@
+ssh -i berkeley_unity_delighting.pem -N -L localhost:8887:localhost:8888 ubuntu@ec2-35-163-238-38.us-west-2.compute.amazonaws.com
