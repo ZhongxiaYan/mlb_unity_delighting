@@ -9,7 +9,7 @@ def scan_lighted_delighted(root_dir):
         lighted_dirs: a list of (type, mesh, version, lighted_directory_path) tuples,
             i.e. (Rock, Mesh_000000, V_000014, 'data/Data_2017_03_31/Data/Rock/Mesh_000000/V_000014/')
     '''
-    data_dir = root_dir 
+    data_dir = root_dir
     delighted_dirs = {}
     lighted_dirs = []
     types = os.listdir(data_dir)
