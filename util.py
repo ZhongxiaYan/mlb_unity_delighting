@@ -1,3 +1,5 @@
+import PIL
+
 import os
 import numpy as np
 
@@ -29,6 +31,24 @@ def scan_lighted_delighted(root_dir):
                 version_dir = mesh_dir + version + '/'
                 lighted_dirs.append((t, mesh, version, version_dir))
     return delighted_dirs, lighted_dirs
+
+def load_dataset(delighted_dirs, lighted_dirs):
+    delighted_data = {}
+    for mesh, mesh_dir in delighted_dirs.items():
+        mesh_im = PIL.Image.open(mesh_dir + '%s_HD_BC.tga' % mesh, 'r')
+        mesh_array = zero_rgb(np.array(mesh_im))
+        mesh_array = mesh_array[:, :, :3]
+        delighted_data[mesh] = mesh_array
+
+    lighted_data = []
+    for t, mesh, v, mesh_dir in lighted_dirs:
+        lit_file = '%s%s_%s_%s_Lit.tga' % (mesh_dir, t, mesh, v)
+        if not os.path.exists(lit_file):
+            continue
+        mesh_im = PIL.Image.open(lit_file, 'r')
+        meshes = np.array(mesh_im)[:, :, :3]
+        lighted_data.append((mesh, meshes))
+    return delighted_data, lighted_data
 
 def zero_rgb(im):
     '''
