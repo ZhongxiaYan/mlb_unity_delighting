@@ -35,10 +35,15 @@ def scan_lighted_delighted(root_dir):
 def load_dataset(delighted_dirs, lighted_dirs):
     delighted_data = {}
     for mesh, mesh_dir in delighted_dirs.items():
-        mesh_im = PIL.Image.open(mesh_dir + '%s_HD_BC.tga' % mesh, 'r')
-        mesh_array = zero_rgb(np.array(mesh_im))
+        mesh_im = np.array(PIL.Image.open(mesh_dir + '%s_HD_BC.tga' % mesh, 'r'))
+        ao_im = np.expand_dims(np.array(PIL.Image.open(mesh_dir + '%s_HD_AO.tga' % mesh, 'r')), axis=2)
+        bn_im = np.array(PIL.Image.open(mesh_dir + '%s_HD_BNM.tga' % mesh, 'r'))
+        alpha = mesh_im[:, :, 3:] > 0
+        mesh_array = mesh_im * alpha
         mesh_array = mesh_array[:, :, :3]
-        delighted_data[mesh] = mesh_array
+        ao_array = ao_im * alpha
+        bn_array = bn_im * alpha
+        delighted_data[mesh] = (mesh_array, ao_array, bn_array, alpha)
 
     lighted_data = []
     for t, mesh, v, mesh_dir in lighted_dirs:
@@ -49,13 +54,6 @@ def load_dataset(delighted_dirs, lighted_dirs):
         meshes = np.array(mesh_im)[:, :, :3]
         lighted_data.append((mesh, meshes))
     return delighted_data, lighted_data
-
-def zero_rgb(im):
-    '''
-    takes in a r, g, b, a numpy array and zero out rgb if a = 0
-    '''
-    alpha = im[:, :, 3:] > 0
-    return im * alpha
 
 def downsample_image(image, factor):
     '''
