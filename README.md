@@ -9,7 +9,7 @@ Machine Learning at Berkeley partnered with Unity Technologies to apply ML metho
 Realistic in-game objects are often captured from the real world through a process called photogrammetry. Photogrammetry involves capturing images of all angles of an object (e.g. a rock) and then reconstructing the object from those images with 3D reconstruction techniques. **De-lighting** is necessary to remove the effect of non-uniform real world lighting and shadow on the object, so that the object can be re-lit by lighting within the game environment. Currently, de-lighting is manually done by artists.
 
 ## Data
-We aimed to build models that operated on surface texture maps (i.e. the unwrapped surface of a 3D object), instead of operating on meshes directly. Our model takes in the lighted texture map and seeks to generate a de-lit texture map. Unity Technologies has several de-lit texture maps already (done by artists), so this serves as our desired output. To generate the lighted inputs into our models, Unity Technologies placed the de-lit meshes in various lighting conditions and generated the lit texture maps.
+We aimed to build models that operated on surface texture maps (i.e. the unwrapped surface of a 3D object), instead of operating on meshes directly. Our model takes in the lighted texture map and seeks to generate a de-lit texture map. Unity Technologies has several de-lit texture maps already (done by artists), so this serves as our desired output. To generate the lighted inputs into our models, Unity Technologies placed the de-lit meshes in various lighting conditions and generated the lit texture maps. Our dataset is entirely consisted of textures of rocks.
 
 Below: left is de-lit by artist (our ground truth), right is lighted.
 
@@ -17,7 +17,7 @@ Below: left is de-lit by artist (our ground truth), right is lighted.
 <img src="results/mesh12_gt.png" width="300"> <img src="results/mesh12_lit.png" width="300">
 
 ## Model
-Our core model consists of a 4 layer encoder followed by a 4 layer decoder, with residual connections between the layers.
+Our core model consists of a 4 layer encoder followed by a 4 layer decoder, with residual connections between the layers. The model is fully convolutional, so it takes in 32x32 randomly cropped / rotated / flipped patches as input during training time (this speeds up training dramatically and produces better output), but takes in the entire texture map during test time. 
 ![alt text](results/network_arch.png)
 
 ### Loss Function
@@ -37,3 +37,11 @@ Since our inputs have regions where alpha = 0 (see examples above), we tried app
 
 ## Results
 
+We show results on the test set (ground truth has never been seen by model before). All result series are lit texture (model input), model output, ground truth. Title is type of loss function we used.
+
+### L2 + Gradient Difference (Best)
+<img src="results/mesh3_lit.png" width="200"> <img src="results/mesh3_patch_gradient.png" width="200"> <img src="results/mesh3_gt.png" width="200">
+
+<img src="results/mesh12_lit.png" width="200"> <img src="results/mesh12_patch_gradient.png" width="200"> <img src="results/mesh12_gt.png" width="200">
+
+Our output has lower resolution than our input, but the colors are mostly accurately transfered. Some of the mid-level details (regions where the ground truth is darker) are lost.
