@@ -44,4 +44,26 @@ We show results on the test set (ground truth has never been seen by model befor
 
 <img src="results/mesh12_lit.png" width="200"> <img src="results/mesh12_patch_gradient.png" width="200"> <img src="results/mesh12_gt.png" width="200">
 
-Our output has lower resolution than our input, but the colors are mostly accurately transfered. Some of the mid-level details (regions where the ground truth is darker) are lost.
+Our output has lower resolution than ground truth, but the colors are mostly accurately transfered and the lighting and shadow effects are neutralized. Some of the mid-level details (regions where the ground truth is darker) are lost.
+
+### L2 with Full Image Input (instead of 32x32 patches)
+<img src="results/mesh3_lit.png" width="200"> <img src="results/mesh3_full_input.png" width="200"> <img src="results/mesh3_gt.png" width="200">
+
+<img src="results/mesh12_lit.png" width="200"> <img src="results/mesh12_full_input.png" width="200"> <img src="results/mesh12_gt.png" width="200">
+
+Output is much blurrier than our best, training time was significantly long, not all lighting effects are removed, and the color of the red rim is off.
+
+### L2 (32x32 Patches)
+<img src="results/mesh3_lit.png" width="200"> <img src="results/mesh3_patch.png" width="200"> <img src="results/mesh3_gt.png" width="200">
+
+<img src="results/mesh12_lit.png" width="200"> <img src="results/mesh12_patch.png" width="200"> <img src="results/mesh12_gt.png" width="200">
+
+Output resolution is better and the color is closer (especially the rim), but still not all lighting effects are removed and the color of the red rim is off.
+
+### L2 + Gradient Difference + Adversarial
+<img src="results/mesh3_lit.png" width="200"> <img src="results/mesh3_patch_gradient_adv.png" width="200"> <img src="results/mesh3_gt.png" width="200">
+
+<img src="results/mesh12_lit.png" width="200"> <img src="results/mesh12_patch_gradient_adv.png" width="200"> <img src="results/mesh12_gt.png" width="200">
+
+Adversarial loss didn't seem to help too much beyond just L2 + Gradient Difference, but we didn't get to do more tuning.
+
